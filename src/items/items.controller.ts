@@ -11,12 +11,12 @@ export class ItemsController {
   constructor(private readonly itemService: ItemsService) {}
 
   @Get()
-  findAll(): Item[] {
+  findAll(): Promise<Item[]> {
     return this.itemService.findAll();
   }
 
   @Get(':id')
-  findOne( @Param("id") id:string): Item {
+  findOne( @Param("id") id:string): Promise<Item> {
     return this.itemService.findOne(id)
   }
 
@@ -24,23 +24,24 @@ export class ItemsController {
   @Get('reqres')
   someFunction(@Req() req: Request, @Res() res: Response): Response {
     console.log(req.url);
+    console.log(process.env.mongoURI)
     return res.send('This is the reqres route')
   }
 
   @Post()
-  create( @Body() createItemDto: CreateItemDto ): string {
-    return `name: ${createItemDto.name} with Description: ${createItemDto.description}`
+  create( @Body() createItemDto: CreateItemDto ): Promise<Item> {
+    return this.itemService.create(createItemDto)
   }
   
   @Put(":id")
-  update( @Body() updateItemDto: CreateItemDto, @Param('id') id:string ): string {
-    return `Update with id: ${id} - Name: ${updateItemDto.name}`
+  update( @Body() updateItemDto: CreateItemDto, @Param('id') id:string ): Promise<Item> {
+    return this.itemService.update(id, updateItemDto);
   }
 
 
   @Delete(":id")
-  delete(@Param("id") id:string): string {
-    return `Route for deleting item with id: ${id}`
+  delete(@Param("id") id:string): Promise<Item> {
+    return this.itemService.delete(id)
   }
 
 }
