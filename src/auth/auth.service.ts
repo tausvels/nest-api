@@ -18,7 +18,9 @@ export class AuthService {
   async register(credentials: RegistrationDTO) {
     try {
       const user = this.userRepo.create(credentials);
+      console.log(user)
       await user.save();
+      console.log('saved!')
       return user;
     } catch (err) {
       if (err.code === '23505') {

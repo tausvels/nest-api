@@ -6,9 +6,9 @@ import { AbstractEntity } from './abstract-entity';
 
 @Entity('users')
 export class UserEntity extends AbstractEntity {
-  @Column({ default: null, nullable: true })
+  @Column({ nullable: true })
   @IsEmail()
-  email: string | null;
+  email: string;
 
   @Column({ default: null, nullable: true })
   username: string | null;
